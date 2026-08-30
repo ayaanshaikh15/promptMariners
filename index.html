@@ -537,21 +537,39 @@
 
   function preload() {
     return new Promise(function (resolve) {
-      frames.forEach(function (src, idx) {
+      var idx = 0;
+      var pending = 0;
+      var CONCURRENCY = 8;
+
+      function loadOne() {
+        if (loaded >= total) {
+          resolve();
+          return;
+        }
+        if (pending >= CONCURRENCY) return;
+        if (idx >= total) return;
+        var i = idx;
+        var src = frames[i];
+        idx++;
+        pending++;
         var img = new Image();
         img.onload = function () {
-          images[idx] = img;
+          images[i] = img;
           loaded++;
+          pending--;
           updateProgress();
-          if (loaded === total) resolve();
+          loadOne();
         };
         img.onerror = function () {
           loaded++;
+          pending--;
           updateProgress();
-          if (loaded === total) resolve();
+          loadOne();
         };
         img.src = src;
-      });
+      }
+
+      for (var k = 0; k < CONCURRENCY; k++) loadOne();
     });
   }
 
