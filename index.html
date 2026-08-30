@@ -11,14 +11,14 @@
   :root {
     --blue-1: #0b2a52;
     --blue-2: #1d6fb8;
-    --glow: #7ec8ff;
-    --glow-strong: #bfe6ff;
-    --glow-soft: rgba(126, 200, 255, 0.35);
-    --glow-dim: rgba(126, 200, 255, 0.15);
-    --surface: rgba(13, 46, 88, 0.5);
-    --line: rgba(126, 200, 255, 0.25);
-    --text: #e8f6ff;
-    --muted: #a9d4f0;
+    --glow: #4da6ff;
+    --glow-strong: #7cc0ff;
+    --glow-soft: rgba(77, 166, 255, 0.35);
+    --glow-dim: rgba(77, 166, 255, 0.15);
+    --surface: rgba(0, 26, 72, 0.5);
+    --line: rgba(77, 166, 255, 0.25);
+    --text: #eaf6ff;
+    --muted: #bfd6ee;
     --heading: 'Orbitron', 'Audiowide', sans-serif;
     --body: 'Rajdhani', 'Space Grotesk', sans-serif;
   }
@@ -174,12 +174,12 @@
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
     transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
-    box-shadow: 0 0 0 rgba(126, 200, 255, 0);
+    box-shadow: 0 0 0 rgba(77, 166, 255, 0);
   }
   .skill-card:hover {
     transform: translateY(-6px);
     border-color: var(--glow);
-    box-shadow: 0 0 24px var(--glow-dim), 0 0 60px rgba(126, 200, 255, 0.1);
+    box-shadow: 0 0 24px var(--glow-dim), 0 0 60px rgba(77, 166, 255, 0.1);
   }
   .skill-card h3 {
     font-size: 1.1rem;
@@ -249,12 +249,12 @@
     text-decoration: none;
     color: var(--text);
     transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
-    box-shadow: 0 0 0 rgba(126, 200, 255, 0);
+    box-shadow: 0 0 0 rgba(77, 166, 255, 0);
   }
   .video-card:hover {
     transform: translateY(-6px);
     border-color: var(--glow);
-    box-shadow: 0 0 24px var(--glow-dim), 0 0 60px rgba(126, 200, 255, 0.1);
+    box-shadow: 0 0 24px var(--glow-dim), 0 0 60px rgba(77, 166, 255, 0.1);
   }
   .video-thumb {
     position: relative;
@@ -283,7 +283,7 @@
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: rgba(126, 200, 255, 0.15);
+    background: rgba(77, 166, 255, 0.15);
     border: 2px solid var(--glow);
     box-shadow: 0 0 18px var(--glow-soft), 0 0 40px var(--glow-dim);
     display: flex;
@@ -406,7 +406,7 @@
     width: 220px;
     height: 4px;
     border-radius: 4px;
-    background: rgba(126, 200, 255, 0.15);
+    background: rgba(77, 166, 255, 0.15);
     overflow: hidden;
     position: relative;
   }
