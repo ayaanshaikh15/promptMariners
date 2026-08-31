@@ -718,6 +718,7 @@
   ];
 
   var skillsGrid = document.getElementById('skills-grid');
+  var allAudios = [];
   skills.forEach(function (s, i) {
     var card = document.createElement('div');
     card.className = 'skill-card reveal';
@@ -728,8 +729,14 @@
     skillAudio.preload = 'none';
     skillAudio.src = s.audio;
     card.appendChild(skillAudio);
+    allAudios.push(skillAudio);
     (function (sa) {
       card.addEventListener('click', function () {
+        allAudios.forEach(function (other) {
+          if (other !== sa) { other.pause(); other.currentTime = 0; }
+        });
+        var welcomeEl = document.getElementById('welcome-audio');
+        if (welcomeEl && welcomeEl !== sa) { welcomeEl.pause(); welcomeEl.currentTime = 0; }
         sa.currentTime = 0;
         sa.muted = false;
         sa.play().catch(function () {});
