@@ -473,6 +473,7 @@
   <h2>Desktop Only</h2>
   <p>This experience is designed for desktop and laptop screens only. Please open this site on a computer to continue.</p>
 </div>
+<audio id="welcome-audio" src="welcome_audio.mp3"></audio>
 <canvas id="canvas"></canvas>
 <div class="shadow-overlay"></div>
 
@@ -674,6 +675,25 @@
     });
     render();
     if (loader) loader.classList.add('hidden');
+    var audio = document.getElementById('welcome-audio');
+    if (!audio) return;
+    audio.muted = true;
+    audio.play().catch(function () {});
+    var unmuted = false;
+    function unmuteAudio(evt) {
+      if (evt && evt.target && evt.target.closest && evt.target.closest('.video-card, .skill-card')) return;
+      var skillAudios = document.querySelectorAll('.skill-card audio');
+      for (var j = 0; j < skillAudios.length; j++) {
+        if (!skillAudios[j].paused) return;
+      }
+      if (!unmuted) {
+        unmuted = true;
+        audio.muted = false;
+        audio.volume = 1;
+      }
+      audio.play().catch(function () {});
+    }
+    window.addEventListener('click', unmuteAudio, { passive: true });
   });
 })();
 </script>
@@ -681,12 +701,12 @@
 <script>
   /* ---- Skills data ---- */
   var skills = [
-    { title: "Logical Reasoning", desc: "Navigate problems with a clear head" },
-    { title: "Prompting Skills", desc: "Command the AI like a true Captain" },
-    { title: "Problem-Solving Ability", desc: "Outmaneuver every storm the AI throws at you" },
-    { title: "AI/LLM Knowledge", desc: "Know your ship inside and out" },
-    { title: "Automation Skills", desc: "Let the crew do the heavy lifting, smartly" },
-    { title: "Creativity & Testing", desc: "Explore uncharted waters, test every route" }
+    { title: "Logical Reasoning", desc: "Navigate problems with a clear head", audio: "public/audio/logicalreasoning.mp3" },
+    { title: "Prompting Skills", desc: "Command the AI like a true Captain", audio: "public/audio/prompting.mp3" },
+    { title: "Problem-Solving Ability", desc: "Outmaneuver every storm the AI throws at you", audio: "public/audio/problemsolving.mp3" },
+    { title: "AI/LLM Knowledge", desc: "Know your ship inside and out", audio: "public/audio/Aiandllm.mp3" },
+    { title: "Automation Skills", desc: "Let the crew do the heavy lifting, smartly", audio: "public/audio/Automations.mp3" },
+    { title: "Creativity & Testing", desc: "Explore uncharted waters, test every route", audio: "public/audio/creativitytesting.mp3" }
   ];
 
   var skillsGrid = document.getElementById('skills-grid');
@@ -696,6 +716,17 @@
     card.innerHTML =
       '<h3>' + s.title + '</h3>' +
       '<p>' + s.desc + '</p>';
+    var skillAudio = document.createElement('audio');
+    skillAudio.preload = 'none';
+    skillAudio.src = s.audio;
+    card.appendChild(skillAudio);
+    (function (sa) {
+      card.addEventListener('click', function () {
+        sa.currentTime = 0;
+        sa.muted = false;
+        sa.play().catch(function () {});
+      });
+    })(skillAudio);
     skillsGrid.appendChild(card);
   });
 
