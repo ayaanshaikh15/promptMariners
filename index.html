@@ -453,7 +453,6 @@
   <div class="load-bar"><div class="load-bar-fill" id="load-fill"></div></div>
   <div class="load-percent" id="load-percent">0%</div>
 </div>
-<audio id="welcome-audio" src="welcome_audio.mp3"></audio>
 <canvas id="canvas"></canvas>
 <div class="shadow-overlay"></div>
 
@@ -659,22 +658,6 @@
     });
     render();
     if (loader) loader.classList.add('hidden');
-    var audio = document.getElementById('welcome-audio');
-    if (audio) {
-      audio.muted = true;
-      audio.play().catch(function () {});
-      var unmuted = false;
-      function unmuteAudio(evt) {
-        if (evt && evt.target && evt.target.closest && evt.target.closest('.video-card')) return;
-        if (!unmuted) {
-          unmuted = true;
-          audio.muted = false;
-          audio.volume = 1;
-        }
-        audio.play().catch(function () {});
-      }
-      window.addEventListener('click', unmuteAudio, { passive: true });
-    }
   });
 })();
 </script>
