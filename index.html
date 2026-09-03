@@ -21,6 +21,8 @@
     --muted: #bfd6ee;
     --heading: 'Orbitron', 'Audiowide', sans-serif;
     --body: 'Rajdhani', 'Space Grotesk', sans-serif;
+    --img-w: min(100vw, calc(100vh * 16 / 9));
+    --img-h: min(100vh, calc(100vw * 9 / 16));
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -63,7 +65,8 @@
   .content {
     position: relative;
     z-index: 2;
-    width: 100%;
+    width: var(--img-w);
+    margin: 0 auto;
     overflow-wrap: break-word;
     overflow-x: hidden;
   }
@@ -422,64 +425,33 @@
     .video-title { font-size: 0.8rem; padding: 0.7rem; }
     section.pane { padding: 4rem 1.5rem; }
   }
+
+  /* ---- Mobile phones ---- */
+  @media (max-width: 640px) {
+    .hero { padding: 2rem 1.25rem; }
+    .hero .brand-line { letter-spacing: 0.3em; }
+    .hero h1 { font-size: clamp(1.1rem, 7.5vw, 2.2rem); letter-spacing: 0; white-space: nowrap; text-align: center; width: 100%; max-width: 100%; overflow: visible; margin: 0 auto; }
+    .hero .tagline { letter-spacing: 0.08em; font-size: clamp(0.8rem, 3.4vw, 1rem); }
+    .skills-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .skill-card { padding: 1.2rem 1rem; }
+    .video-grid { grid-template-columns: repeat(2, 1fr); max-width: 340px; gap: 0.7rem; }
+    .video-title { font-size: 0.72rem; padding: 0.55rem 0.6rem; }
+    .video-card .play-icon { width: 40px; height: 40px; }
+    .video-card .play-icon::before { border-left-width: 11px; border-top-width: 7px; border-bottom-width: 7px; }
+    section.pane { padding: 3rem 1rem; }
+    section.pane .inner { padding: 0 0.25rem; }
+    .kicker { font-size: 0.95rem; letter-spacing: 0.28em; }
+    .scroll-cue { letter-spacing: 0.2em; }
+    .training-overlay { padding: 2rem 1rem; }
+    .credit { font-size: 0.8rem; }
+  }
 </style>
 </head>
-<style>
-  #mobile-blocker {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background: radial-gradient(ellipse at center, #0a1e3f 0%, #03070f 100%);
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 2rem;
-  }
-  #mobile-blocker.active { display: flex; }
-  #mobile-blocker h2 {
-    font-family: var(--heading);
-    font-size: 1.6rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    color: var(--glow);
-    text-shadow: 0 0 14px var(--glow-soft);
-    margin-bottom: 1rem;
-    text-transform: uppercase;
-  }
-  #mobile-blocker p {
-    font-family: var(--body);
-    font-size: 1.1rem;
-    color: var(--muted);
-    max-width: 360px;
-    line-height: 1.6;
-  }
-</style>
-<script>
-  (function () {
-    var w = window.innerWidth;
-    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone/i.test(navigator.userAgent) || w <= 767;
-    if (isMobile) {
-      document.addEventListener('DOMContentLoaded', function () {
-        document.body.style.overflow = 'hidden';
-        var blocker = document.getElementById('mobile-blocker');
-        if (blocker) blocker.classList.add('active');
-        var loader = document.getElementById('loader');
-        if (loader) loader.style.display = 'none';
-      });
-    }
-  })();
-</script>
 <body>
 <div id="loader">
   <div class="load-title">Loading the Voyage</div>
   <div class="load-bar"><div class="load-bar-fill" id="load-fill"></div></div>
   <div class="load-percent" id="load-percent">0%</div>
-</div>
-<div id="mobile-blocker">
-  <h2>Desktop Only</h2>
-  <p>This experience is designed for desktop and laptop screens only. Please open this site on a computer to continue.</p>
 </div>
 <audio id="welcome-audio" src="welcome_audio.mp3"></audio>
 <canvas id="canvas"></canvas>
@@ -550,9 +522,6 @@
 
 <script>
 (function () {
-  var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone/i.test(navigator.userAgent) || window.innerWidth <= 767;
-  if (isMobile) return;
-
   var parts = [
     { base: 'firstpartofimages', frames: 300 },
     { base: 'secondpartogimages', frames: 240 }
@@ -629,12 +598,19 @@
     return window.innerWidth;
   }
 
+  var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone/i.test(navigator.userAgent) || window.innerWidth <= 767;
+
   function drawFrame(idx) {
     var img = images[idx];
     if (!img) return;
     var cw = phoneWidth();
     var ch = window.innerHeight;
-    var scale = Math.min(cw / img.width, ch / img.height);
+    var scale;
+    if (isMobile) {
+      scale = Math.max(cw / img.width, ch / img.height);
+    } else {
+      scale = Math.min(cw / img.width, ch / img.height);
+    }
     var w = img.width * scale;
     var h = img.height * scale;
     ctx.fillStyle = '#000';
